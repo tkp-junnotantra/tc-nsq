@@ -12,7 +12,7 @@ func main() {
 	prod := messaging.NewProducer(prodConf)
 
 	// publish message
-	topic := "top"
+	topic := "req"
 	msg := "hello world" // TODO: write your message here
 	prod.Publish(topic, msg)
 }

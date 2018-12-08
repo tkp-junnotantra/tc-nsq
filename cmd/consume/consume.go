@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"log"
 	"os"
 	"os/signal"
@@ -20,10 +21,10 @@ func main() {
 	cfg := messaging.ConsumerConfig{
 		Channel:       "junno",          // TODO: update to desired value
 		LookupAddress: "127.0.0.1:4161", // TODO: update to desired value
-		Topic:         "top",            // TODO: update to desired value
+		Topic:         "req",            // TODO: update to desired value
 		MaxAttempts:   defaultConsumerMaxAttempts,
 		MaxInFlight:   defaultConsumerMaxInFlight,
-		Handler:       handleMessage,
+		Handler:       requeueMessage,
 	}
 	consumer := messaging.NewConsumer(cfg)
 
@@ -68,5 +69,14 @@ func handleMessage2(message *nsq.Message) error {
 
 func requeueMessage(message *nsq.Message) error {
 	// TODO: requeue message
+	if message.Attempts < 3 {
+		log.Println("Let's requeue")
+		return errors.New("Fake error here, requeue the message")
+	}
+	data := string(message.Body)
+	log.Printf("finaly finish on attempt %d", message.Attempts)
+	log.Println("consumed - " + data)
+
+	message.Finish()
 	return nil
 }
