@@ -18,12 +18,12 @@ const (
 func main() {
 	// initiate consumer
 	cfg := messaging.ConsumerConfig{
-		Channel:       "", // TODO: update to given channel name
-		LookupAddress: "", // TODO: update to nsqlookups adress
-		Topic:         "", // TODO: update to given topic name
+		Channel:       "junno",          // TODO: update to desired value
+		LookupAddress: "127.0.0.1:4161", // TODO: update to desired value
+		Topic:         "top",            // TODO: update to desired value
 		MaxAttempts:   defaultConsumerMaxAttempts,
 		MaxInFlight:   defaultConsumerMaxInFlight,
-		Handler:       requeueMessage,
+		Handler:       handleMessage,
 	}
 	consumer := messaging.NewConsumer(cfg)
 
@@ -41,6 +41,9 @@ func main() {
 
 func handleMessage(message *nsq.Message) error {
 	// TODO: print and finish message
+	data := string(message.Body)
+	log.Println("consumed - " + data)
+	message.Finish()
 	return nil
 }
 

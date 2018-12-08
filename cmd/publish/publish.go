@@ -7,12 +7,12 @@ import (
 func main() {
 	// initiate producer
 	prodConf := messaging.ProducerConfig{
-		NsqdAddress: "", // TODO: update to nsqd address
+		NsqdAddress: "127.0.0.1:4150",
 	}
 	prod := messaging.NewProducer(prodConf)
 
 	// publish message
-	topic := "" // TODO: update to given topic name
-	msg := ""   // TODO: write your message here
+	topic := "top"
+	msg := "hello world" // TODO: write your message here
 	prod.Publish(topic, msg)
 }
