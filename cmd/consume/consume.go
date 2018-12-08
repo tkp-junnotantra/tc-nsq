@@ -27,8 +27,19 @@ func main() {
 	}
 	consumer := messaging.NewConsumer(cfg)
 
+	cfg2 := messaging.ConsumerConfig{
+		Channel:       "junno",          // TODO: update to desired value
+		LookupAddress: "127.0.0.1:4161", // TODO: update to desired value
+		Topic:         "top",            // TODO: update to desired value
+		MaxAttempts:   defaultConsumerMaxAttempts,
+		MaxInFlight:   defaultConsumerMaxInFlight,
+		Handler:       handleMessage2,
+	}
+	consumer2 := messaging.NewConsumer(cfg2)
+
 	// run consumer
 	consumer.Run()
+	consumer2.Run()
 
 	// keep app alive until terminated
 	term := make(chan os.Signal, 1)
@@ -42,7 +53,15 @@ func main() {
 func handleMessage(message *nsq.Message) error {
 	// TODO: print and finish message
 	data := string(message.Body)
-	log.Println("consumed - " + data)
+	log.Println("[1] consumed - " + data)
+	message.Finish()
+	return nil
+}
+
+func handleMessage2(message *nsq.Message) error {
+	// TODO: print and finish message
+	data := string(message.Body)
+	log.Println("[2] consumed - " + data)
 	message.Finish()
 	return nil
 }
