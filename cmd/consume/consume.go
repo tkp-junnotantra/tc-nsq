@@ -28,7 +28,7 @@ func main() {
 	consumer := messaging.NewConsumer(cfg)
 
 	cfg2 := messaging.ConsumerConfig{
-		Channel:       "junno",          // TODO: update to desired value
+		Channel:       "junno2",         // TODO: update to desired value
 		LookupAddress: "127.0.0.1:4161", // TODO: update to desired value
 		Topic:         "top",            // TODO: update to desired value
 		MaxAttempts:   defaultConsumerMaxAttempts,
