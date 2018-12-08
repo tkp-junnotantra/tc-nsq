@@ -69,13 +69,24 @@ func handleMessage2(message *nsq.Message) error {
 
 func requeueMessage(message *nsq.Message) error {
 	// TODO: requeue message
-	if message.Attempts < 3 {
+	if message.Attempts < 2 {
 		log.Println("Let's requeue")
 		return errors.New("Fake error here, requeue the message")
 	}
 	data := string(message.Body)
-	log.Printf("finaly finish on attempt %d", message.Attempts)
-	log.Println("consumed - " + data)
+
+	log.Println("buggy consumer, let's just handle on different topic")
+
+	// initiate producer
+	prodConf := messaging.ProducerConfig{
+		NsqdAddress: "127.0.0.1:4150",
+	}
+	prod := messaging.NewProducer(prodConf)
+
+	// publish message
+	topic := "top"
+	msg := "republish - " + data // TODO: write your message here
+	prod.Publish(topic, msg)
 
 	message.Finish()
 	return nil
