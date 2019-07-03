@@ -6,10 +6,6 @@ import (
 	"github.com/nsqio/go-nsq"
 )
 
-const (
-	defaultConsumerPrefix = "tech_cur_"
-)
-
 type (
 	ConsumerConfig struct {
 		Topic         string
@@ -32,7 +28,7 @@ func NewConsumer(cfg ConsumerConfig) Consumer {
 	nsqConf.MaxAttempts = cfg.MaxAttempts
 	nsqConf.MaxInFlight = cfg.MaxInFlight
 
-	topic := defaultConsumerPrefix + cfg.Topic
+	topic := cfg.Topic
 	c, err := nsq.NewConsumer(topic, cfg.Channel, nsq.NewConfig())
 	if err != nil {
 		log.Fatal(err)

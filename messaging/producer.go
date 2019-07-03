@@ -7,10 +7,6 @@ import (
 	"github.com/nsqio/go-nsq"
 )
 
-const (
-	defaultProducerPrefix = "tech_cur_"
-)
-
 type (
 	ProducerConfig struct {
 		NsqdAddress string
@@ -37,7 +33,7 @@ func (p *Producer) Publish(topic string, msg interface{}) error {
 	if err != nil {
 		return err
 	}
-	topic = defaultProducerPrefix + topic
+	topic = topic
 
 	return p.prod.Publish(topic, payload)
 }

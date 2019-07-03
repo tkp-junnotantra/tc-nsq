@@ -23,7 +23,7 @@ func main() {
 		Topic:         "", // TODO: update to given topic name
 		MaxAttempts:   defaultConsumerMaxAttempts,
 		MaxInFlight:   defaultConsumerMaxInFlight,
-		Handler:       requeueMessage,
+		Handler:       handleMessage,
 	}
 	consumer := messaging.NewConsumer(cfg)
 
@@ -41,10 +41,5 @@ func main() {
 
 func handleMessage(message *nsq.Message) error {
 	// TODO: print and finish message
-	return nil
-}
-
-func requeueMessage(message *nsq.Message) error {
-	// TODO: requeue message
 	return nil
 }
